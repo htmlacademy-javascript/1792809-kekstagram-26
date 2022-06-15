@@ -4,18 +4,16 @@ function getRandomInt(min, max) {
   if (min >= 0 && max >= 0) {
     if (min < max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      throw new Error('Максимальное значение должно быть больше минимального!');
     }
+  } else {
+    throw new Error('Значения интервала должны быть больше нуля!');
   }
 }
-
-getRandomInt(0, 20)
+getRandomInt(1, 5)
 
 function getlengthString(line, length) {
-  if (line.length <= 0 || line.length > length) {
-    return 'false';
-  } else {
-    return 'true';
-  }
+  return line.length <= length;
 }
-
-getlengthString('Добрейший вечерочек!', 20)
+getlengthString('Привет', 1);

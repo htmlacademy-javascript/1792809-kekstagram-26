@@ -45,22 +45,21 @@ const DESCRIPTION_PHOTOS = [
   'Грустный вечер(('
 ];
 
-const createComment = () => ({
-  id: getRandomNum(100, 999),
+const createComments = (id) => ({
+  id: id + 1,
   avatar: `img/avatar-${getRandomNum(1, 6)}.svg`,
   message: PROFILE_COMMENTS[getRandomNum(0, PROFILE_COMMENTS.length-1)],
   name: PROFILE_NAMES[getRandomNum(0, PROFILE_NAMES.length-1)]
 });
 
-const createPost = () => ({
-  id: getRandomNum(1, 25),
-  url: `photos/${getRandomNum(1, 25)}.jpg`,
+const createPost = (id) => ({
+  id: id + 1,
+  url: `photos/${id + 1}.jpg`,
   description: DESCRIPTION_PHOTOS[getRandomNum(0, DESCRIPTION_PHOTOS.length-1)],
   likes: getRandomNum(15, 200),
-  comments: Array.from({length: 6}, createComment),
+  comments: Array.from({ length: getRandomNum(0, 6) }, (element, index) => createComments(index)),
 });
-
-const post = Array.from({length: 25}, createPost);
-console.log(post);
-
-
+const createPhotos = () =>
+  Array.from({ length: 25 }, (element, index) => createPost(index));
+const posts = createPhotos();
+console.log(posts);

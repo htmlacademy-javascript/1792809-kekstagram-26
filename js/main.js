@@ -1,2 +1,2 @@
 import {posts} from './data.js';
-console.log(posts);
+import './draw-thumbnails.js';

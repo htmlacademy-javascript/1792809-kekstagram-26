@@ -3,7 +3,7 @@ import {posts} from './data.js';
 const fullImg = document.querySelector('.big-picture');                         //секция для просмотра больших фоток
 const imgContainer = document.querySelectorAll('.picture');                     //контейнер всех фоток
 
-const bigPhoto = fullImg.querySelector('.big-picture__img img');                    //фото
+const bigPhoto = fullImg.querySelector('.big-picture__img img');               //фото
 const bigPhotoLikes = fullImg.querySelector('.likes-count');                   //лайки
 const bigPhotoCommentsCount = fullImg.querySelector('.comments-count');        //кол-во комментариев
 const bigPhotoComments = fullImg.querySelector('.social__comments');           //комментарии к фото
@@ -18,28 +18,19 @@ const hiddenElements = () => {                                                  
   commentsCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
 };
+hiddenElements();
 
-const showWindow = () => {                                                      //добавляем класс, чтобы контейнер с фото не прокручивался при скролле
-  document.body.classList.add('modal-open');
+const showFullImg = (index) => {
+  bigPhoto.src = posts[index].url;
+  bigPhotoLikes.textContent = posts[index].likes;
+  bigPhotoCommentsCount.textContent = posts[index].comments.length;
+  bigPhotoDescription.textContent = posts[index].description;
 };
 
-const closeWindow = () => {                                                    //убираем его
-  document.body.classList.remove('modal-open');
-  fullImg.classList.add('hidden');
-};
+const templateСomments = (index) => {
+  const commentsContainerFragment = document.createDocumentFragment();
 
-const showFullImg = (Index) => {                                                //заполняем данными по конкретной фотографии
-  bigPhoto.src = posts[Index].url;
-  bigPhotoLikes.textContent = posts[Index].likes;
-  bigPhotoCommentsCount.textContent = posts[Index].comments.length;
-  bigPhotoDescription.textContent = posts[Index].description;
-  fullImg.classList.remove('hidden');
-};
-
-const templateСomments = (Index) => {                                             // функция для создания social__comments
-  const commentsContainerFragment = document.createDocumentFragment();           //  шаблон для social__comments
-
-  posts[Index].comments.forEach(({avatar, name, message}) => {
+  posts[index].comments.forEach(({avatar, name, message}) => {
     const comment = document.createElement('li');
     const commentAvatar = document.createElement('img');
     const commentText = document.createElement('p');
@@ -60,20 +51,43 @@ const templateСomments = (Index) => {                                          
   bigPhotoComments.append(commentsContainerFragment);
 };
 
-imgContainer.forEach((photo, index) => {
-  photo.addEventListener('click', showWindow );
-  photo.addEventListener('click', hiddenElements);
-  photo.addEventListener('click', showFullImg.bind(null, index));
-  photo.addEventListener('click', templateСomments.bind(null, index));
-});
+const openFullImg = (photoIndex) => {
+  document.body.classList.add('modal-open');
+  fullImg.classList.remove('hidden');
 
-cancelButton.addEventListener('click', () => {
-  closeWindow();
-});
+  showFullImg(photoIndex);
+  templateСomments(photoIndex);
 
-document.addEventListener('keydown', (event) => {
-  if (event.code === 'Escape') {
-    closeWindow();
+  cancelButton.addEventListener('click', onCancelButton);
+  document.addEventListener('keydown', onDocumentKeyDown);
+};
+
+const closeFullImg = () => {
+  document.body.classList.remove('modal-open');
+  fullImg.classList.add('hidden');
+
+  cancelButton.removeEventListener('click', onCancelButton);
+  document.removeEventListener('keydown', onDocumentKeyDown);
+};
+
+function onCancelButton () {
+  closeFullImg();
+}
+
+const escape = (event) => event.key === 'Escape';
+
+function onDocumentKeyDown (event) {
+  if (escape(event)) {
+    event.preventDefault();
+    closeFullImg();
   }
+}
+
+function onMiniImgClick (photoIndex) {
+  openFullImg(photoIndex);
+}
+
+imgContainer.forEach((photo, index) => {
+  photo.addEventListener('click', onMiniImgClick.bind(null, index));
 });
 

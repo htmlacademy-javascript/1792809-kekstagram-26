@@ -1,20 +1,21 @@
 import {posts} from './data.js';
+import {escape} from './util.js';
 
-const fullImg = document.querySelector('.big-picture');                         //секция для просмотра больших фоток
-const imgContainer = document.querySelectorAll('.picture');                     //контейнер всех фоток
+const fullImg = document.querySelector('.big-picture');
+const imgContainer = document.querySelectorAll('.picture');
 
-const bigPhoto = fullImg.querySelector('.big-picture__img img');               //фото
-const bigPhotoLikes = fullImg.querySelector('.likes-count');                   //лайки
-const bigPhotoCommentsCount = fullImg.querySelector('.comments-count');        //кол-во комментариев
-const bigPhotoComments = fullImg.querySelector('.social__comments');           //комментарии к фото
-const bigPhotoDescription = fullImg.querySelector('.social__caption');         //описание к фото
+const bigPhoto = fullImg.querySelector('.big-picture__img img');
+const bigPhotoLikes = fullImg.querySelector('.likes-count');
+const bigPhotoCommentsCount = fullImg.querySelector('.comments-count');
+const bigPhotoComments = fullImg.querySelector('.social__comments');
+const bigPhotoDescription = fullImg.querySelector('.social__caption');
 
-const cancelButton = fullImg.querySelector('.big-picture__cancel');             //кнопка закрыть
+const cancelButton = fullImg.querySelector('.big-picture__cancel');
 
-const commentsCount = fullImg.querySelector('.social__comment-count');          //блок, коментарии к фото
-const commentsLoader = fullImg.querySelector('.comments-loader');               //Кнопка для загрузки новой порции комментариев
+const commentsCount = fullImg.querySelector('.social__comment-count');
+const commentsLoader = fullImg.querySelector('.comments-loader');
 
-const hiddenElements = () => {                                                  //скрываем их
+const hiddenElements = () => {
   commentsCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
 };
@@ -74,11 +75,9 @@ function onCancelButton () {
   closeFullImg();
 }
 
-const escape = (event) => event.key === 'Escape';
-
-function onDocumentKeyDown (event) {
-  if (escape(event)) {
-    event.preventDefault();
+function onDocumentKeyDown (evt) {
+  if (escape(evt)) {
+    evt.preventDefault();
     closeFullImg();
   }
 }

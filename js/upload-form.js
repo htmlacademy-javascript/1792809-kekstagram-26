@@ -1,7 +1,7 @@
-import {escape} from './util.js';
+import {isEscape} from './util.js';
 
-const MAX_COUNT_HASHTAGS = 5;
-const MAX_COUNT_DESCRIPTION = 140;
+const MAX_AMOUNT_HASHTAGS = 5;
+const MAX_AMOUNT_COMMENT = 140;
 const uploadPhotoUploadForm = document.querySelector('.img-upload__form');
 const loadUserPhoto = uploadPhotoUploadForm.querySelector('#upload-file');
 const photoEditor = uploadPhotoUploadForm.querySelector('.img-upload__overlay');
@@ -34,13 +34,10 @@ const validateContentHashtag = (value) => {
   }
   return true;
 };
-const validateContentHashtagError = 'Хэштег должен начинаться с # и иметь максимум 20 символов';
+const validateContentHashtagError = 'Хэштег должен начинаться с # и иметь кол-во символов от 1 до 20';
 const validateQuantityHashtag = (value) => {
   const hashtags = removeHashtags(value);
-  if (hashtags.length > MAX_COUNT_HASHTAGS) {
-    return false;
-  }
-  return true;
+  return hashtags.length <= MAX_AMOUNT_HASHTAGS;
 };
 
 const validateQuantityHashtagError = 'Максимум 5 хэштегов';
@@ -58,7 +55,7 @@ const validateRepeatsHashtag = (value) => {
 
 const validateRepeatsHashtagError = 'Такой хэштег уже существует';
 const validateQuantitySymbols  = (description) => {
-  if (description.length > MAX_COUNT_DESCRIPTION) {
+  if (description.length > MAX_AMOUNT_COMMENT) {
     return false;
   }
   return true;
@@ -75,7 +72,7 @@ uploadPhotoUploadForm.addEventListener('submit', (evt) => {
 });
 
 const onDocumentKeydown = (evt) => {
-  if (escape(evt)) {
+  if (isEscape(evt)) {
     evt.preventDefault();
     onCancelButtonClick();
   }
@@ -118,3 +115,4 @@ function onCancelButtonClick () {
 }
 
 loadUserPhoto.addEventListener('change', onUploadFileChange);
+

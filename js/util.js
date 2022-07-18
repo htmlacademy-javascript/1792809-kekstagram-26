@@ -12,11 +12,11 @@ const getRandomNum = (min, max) => {
   }
 };
 
-const getlengthString = (text, maxLength) => text.length <= maxLength;
+const getLengthString = (text, maxLength) => text.length <= maxLength;
 
-const escape = (evt) => evt.key === 'Escape';
+const isEscape = (evt) => evt.key === 'Escape';
 
 export {getRandomNum};
-export {escape};
-export {getlengthString};
+export {isEscape};
+export {getLengthString};
 

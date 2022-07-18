@@ -29,6 +29,10 @@ const DESCRIPTION_PHOTOS = [
   'Грустный вечер(('
 ];
 
+const PUBLICATION_COUNT = 25;
+const COMMENT_COUNT = 13;
+
+
 const createComments = (id) => ({
   id: id + 1,
   avatar: `img/avatar-${getRandomNum(1, 6)}.svg`,
@@ -41,10 +45,10 @@ const createPost = (id) => ({
   url: `photos/${id + 1}.jpg`,
   description: DESCRIPTION_PHOTOS[getRandomNum(0, DESCRIPTION_PHOTOS.length-1)],
   likes: getRandomNum(15, 200),
-  comments: Array.from({ length: getRandomNum(0, 6) }, (element, index) => createComments(index)),
+  comments: Array.from({ length: COMMENT_COUNT}, (element, index) => createComments(index)),
 });
 const createPhotos = () =>
-  Array.from({ length: 25 }, (element, index) => createPost(index));
+  Array.from({ length: PUBLICATION_COUNT }, (element, index) => createPost(index));
 const posts = createPhotos();
 
 export {posts};

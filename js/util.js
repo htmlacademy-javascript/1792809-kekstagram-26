@@ -1,4 +1,4 @@
-function getRandomNum(min, max) {
+const getRandomNum = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   if (min >= 0 && max >= 0) {
@@ -10,10 +10,13 @@ function getRandomNum(min, max) {
   } else {
     throw new Error('Значения интервала должны быть больше нуля!');
   }
-}
+};
 
-function getlengthString(line, length) {
-  return line.length <= length;
-}
+const getlengthString = (text, maxLength) => text.length <= maxLength;
+
+const escape = (evt) => evt.key === 'Escape';
 
 export {getRandomNum};
+export {escape};
+export {getlengthString};
+

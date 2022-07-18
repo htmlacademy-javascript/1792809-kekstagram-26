@@ -1395,3 +1395,11 @@ main {
 .hidden {
   display: none;
 }
+
+.input__error {
+  color: rgb(184, 57, 57);
+  font-weight: bold;
+  font-size: 17px;
+}
+
+

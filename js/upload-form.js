@@ -115,4 +115,3 @@ function onCancelButtonClick () {
 }
 
 loadUserPhoto.addEventListener('change', onUploadFileChange);
-

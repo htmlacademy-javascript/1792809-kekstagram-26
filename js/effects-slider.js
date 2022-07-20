@@ -81,8 +81,8 @@ noUiSlider.create(effectLevelSlider, {        /*Поключение noUiSlider*
   connect: 'lower',
 });
 
-const resetEffects = () => {                                            /*Cброса значений*/
-  effectLevelSlider.setAttribute('disabled', true);
+const resetEffects = () => {                                            /*Cброс значений*/
+  effectLevelSlider.disabled = true;
   effectLevel.classList.add('hidden');
   uploadPreviewImg.className = 'img-upload__preview';
   effectLevelValue.value = '';
@@ -122,4 +122,4 @@ const onEffectsListChange = (evt) => {                                       /*�
 
 effectsList.addEventListener('change', onEffectsListChange);
 
-export {updateEffects};
+export {resetEffects};

@@ -1,4 +1,6 @@
 import {isEscape} from './util.js';
+import {catchStartPhotoSize} from './scale-slider.js';
+import {resetEffects} from './effects-slider.js';
 
 const MAX_AMOUNT_HASHTAGS = 5;
 const MAX_AMOUNT_COMMENT = 140;
@@ -112,6 +114,8 @@ const onUploadFileChange = () => {
 
 function onCancelButtonClick () {
   closeEditPhotoModal();
+  catchStartPhotoSize();
+  resetEffects();
 }
 
 loadUserPhoto.addEventListener('change', onUploadFileChange);

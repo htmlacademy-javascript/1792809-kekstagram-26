@@ -32,4 +32,4 @@ const onBiggerButtonClick = () => {                  /*Уменьшение из
 controlSmaller.addEventListener('click', onSmallerButtonClick);          /*обработчики на увеличение и уменьшение изображения*/
 controlBigger.addEventListener('click', onBiggerButtonClick);
 
-export {catchStartPhotoSize};
+export {catchStartPhotoSize, onBiggerButtonClick, onSmallerButtonClick};

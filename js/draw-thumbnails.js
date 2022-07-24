@@ -1,18 +1,43 @@
-import {posts} from './data.js';
+import {uploadComments, openFullImg, showFullImg, showComments} from './draw-full-image.js';
 
-const сontainerAllImages = document.querySelector('.pictures');                              /* берем контейнер из разметки для генерации туда фоток */
-const stemplateImage = document.querySelector('#picture').content.querySelector('.picture'); /* берем шаблон фотки */
+let photosData;
 
-const similarPostsFragment  = document.createDocumentFragment();                             /* создаем 'фрагмент-контейнер' для всех готовых обьектов */
+const сontainerAllImages = document.querySelector('.pictures');
+const stemplateImage = document.querySelector('#picture').content.querySelector('.picture');
 
-posts.forEach((object) => {                                                                  /* проходим по всем элементам из генерации*/
-  const postElement = stemplateImage.cloneNode(true);                                        /* делаем клон шаблона */
-  postElement.querySelector('.picture__img').src = object.url;                               /* присваеиваем фотке путь */
-  postElement.querySelector('.picture__likes').textContent = object.likes;                   /* присваиваем лайкам случайное кол-во */
-  postElement.querySelector('.picture__comments').textContent = object.comments.length;      /* присваиваем из массива комментарий */
-  similarPostsFragment.appendChild(postElement);                                             /* вставляем все готовые элементы в фрагмент */
-});
+const renderSimilarPhotos = (similarPhotos) => {
+  photosData = similarPhotos;
 
-сontainerAllImages.appendChild(similarPostsFragment);                                        /* вставляем в котейнер из разметки обьекты фрагмента */
+  const similarPostsFragment  = document.createDocumentFragment();
+
+  similarPhotos.forEach(({url, likes, comments}) => {
+    const otherUserPhoto = stemplateImage.cloneNode(true);
+    otherUserPhoto.querySelector('.picture__img').src = url;
+    otherUserPhoto.querySelector('.picture__likes').textContent = likes;
+    otherUserPhoto.querySelector('.picture__comments').textContent = comments.length;
+    similarPostsFragment.append(otherUserPhoto);
+  });
+
+  сontainerAllImages.append(similarPostsFragment);
+
+  сontainerAllImages.addEventListener('click', onPhotoMiniatureClick);
+};
+
+const openFullSize = (photoMiniature) => {
+  const clickedPhotoNode = photoMiniature.closest('.picture');
+  if (clickedPhotoNode) {
+    const clickedPhotoIndex = photosData.findIndex( (photo) => clickedPhotoNode.children[0].src.endsWith(photo.url));
+    openFullImg();
+    showFullImg(photosData, clickedPhotoIndex);
+    showComments();
+    uploadComments(photosData, clickedPhotoIndex);
+  }
+};
+
+function onPhotoMiniatureClick (evt) {
+  openFullSize(evt.target);
+}
+
+export {renderSimilarPhotos};
 
 

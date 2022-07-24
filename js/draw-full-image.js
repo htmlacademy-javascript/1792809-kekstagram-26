@@ -1,10 +1,9 @@
-import {posts} from './data.js';
 import {isEscape} from './util.js';
 
 const fullImg = document.querySelector('.big-picture');
-const imgContainer = document.querySelector('.pictures');
+/* const imgContainer = document.querySelector('.pictures'); */
 
-const bigPhoto = fullImg.querySelector('.big-picture__img > img');
+const bigPhoto = fullImg.querySelector('.big-picture__img img');
 const bigPhotoLikes = fullImg.querySelector('.likes-count');
 const bigPhotoCommentsCount = fullImg.querySelector('.comments-count');
 const bigPhotoComments = fullImg.querySelector('.social__comments');
@@ -28,7 +27,7 @@ const hideComments = () => {
   commentsLoader.classList.add('hidden');
 };
 
-const showFullImg = (index) => {
+const showFullImg = (posts, index) => {
   bigPhoto.src = posts[index].url;
   bigPhotoLikes.textContent = posts[index].likes;
   bigPhotoComments.textContent = posts[index].comments.length;
@@ -43,7 +42,7 @@ const setNumberVisibleComments = () => {
   bigPhotoCountVisible.textContent = commentsVisualCount;
 };
 
-const uploadComments = (index) => {
+const uploadComments = (posts, index) => {
   const commentsContainerFragment = document.createDocumentFragment();
   const commentsTotal = posts[index].comments;
   const commentsTotalCount = commentsTotal.length;
@@ -133,16 +132,5 @@ function onDocumentKeyDown (evt) {
   }
 }
 
-function onMiniImgClick (evt) {
-  const clickedPhotoNode = evt.target.closest('.picture');
-  if (clickedPhotoNode) {
-    const clickedPhotoIndex = posts.findIndex( (photo) => clickedPhotoNode.children[0].src.endsWith(photo.url));
-    openFullImg();
-    showFullImg(clickedPhotoIndex);
-    showComments();
-    uploadComments(clickedPhotoIndex);
-  }
-}
-imgContainer.addEventListener('click', onMiniImgClick);
-
+export {uploadComments, openFullImg, showFullImg, showComments};
 

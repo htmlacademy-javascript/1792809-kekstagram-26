@@ -1,5 +1,5 @@
 import {getLengthString, isEscape, openErrorLoadMessage, openSuccessLoadMessage} from './util.js';
-import {catchStartPhotoSize, onBiggerButtonClick, onSmallerButtonClick} from './scale-slider.js';
+import {catchStartPhotoSize} from './scale-slider.js';
 import {resetEffects} from './effects-slider.js';
 import {sendData} from './api.js';
 
@@ -41,10 +41,7 @@ const validateContentHashtagError = 'Хэштег должен начинать�
 
 const validateQuantityHashtag = (value) => {
   const hashtags = removeHashtags(value);
-  if (hashtags.length > MAX_AMOUNT_HASHTAGS) {
-    return false;
-  }
-  return true;
+  return hashtags.length <= MAX_AMOUNT_HASHTAGS;
 };
 const validateQuantityHashtagError = 'Максимум 5 хэштегов';
 
@@ -83,7 +80,7 @@ const resetTextFields = () => {
   }
 
   textHashtags.value = '';
-  textHashtags.value = '';
+  textDescription.value = '';
 };
 
 const closeEditPhotoModal = () => {
@@ -92,7 +89,6 @@ const closeEditPhotoModal = () => {
 
   resetEffects();
   resetTextFields();
-  onBiggerButtonClick();
 
   textHashtags.removeEventListener('keydown', onTextInputNodeKeydown);
   textDescription.removeEventListener('keydown', onTextInputNodeKeydown);
@@ -111,7 +107,6 @@ const onUploadFileChange = () => {
   photoEditor.classList.remove('hidden');
 
   resetEffects();
-  onSmallerButtonClick();
 
   textHashtags.addEventListener('keydown', onTextInputNodeKeydown);
   textDescription.addEventListener('keydown', onTextInputNodeKeydown);

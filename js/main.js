@@ -2,6 +2,7 @@ import {renderSimilarPhotos, setDefaultFilter, setRandomFilter, setDiscussedFilt
 import './upload-form.js';
 import {getData} from './api.js';
 import {openErrorLoadMessage, debounce} from './util.js';
+import './upload-img.js';
 
 const RANDOM_IMG_NUMBER = 10;
 

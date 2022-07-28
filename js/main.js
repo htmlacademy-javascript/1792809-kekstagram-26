@@ -1,15 +1,26 @@
-import {renderSimilarPhotos} from './draw-thumbnails.js';
+import {renderSimilarPhotos, setDefaultFilter, setRandomFilter, setDiscussedFilter, getFixedNumberImg, compareComments} from './draw-thumbnails.js';
 import './upload-form.js';
 import {getData} from './api.js';
-import {openErrorGetDataMessage} from './util.js';
+import {openErrorLoadMessage, debounce} from './util.js';
+import './upload-img.js';
+
+const RANDOM_IMG_NUMBER = 10;
+
+const filtersWindow = document.querySelector('.img-filters');
+filtersWindow.classList.remove('img-filters--inactive');
 
 getData(
-  (photos) => renderSimilarPhotos(photos),
-  () => openErrorGetDataMessage()
+  (photos) => {
+    renderSimilarPhotos(photos.slice());
+    setDefaultFilter(debounce(
+      () => renderSimilarPhotos(photos.slice()),
+    ));
+    setRandomFilter(debounce(
+      () => renderSimilarPhotos(getFixedNumberImg(photos.slice(), RANDOM_IMG_NUMBER)),
+    ));
+    setDiscussedFilter(debounce(
+      () => renderSimilarPhotos(photos.slice().sort(compareComments)),
+    ));
+  },
+  () => openErrorLoadMessage()
 );
-
-
-/* import './draw-full-image.js';
-import './upload-form.js';
-import './scale-slider.js';
-import './effects-slider.js'; */

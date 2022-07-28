@@ -1,7 +1,6 @@
 import {isEscape} from './util.js';
 
 const fullImg = document.querySelector('.big-picture');
-/* const imgContainer = document.querySelector('.pictures'); */
 
 const bigPhoto = fullImg.querySelector('.big-picture__img img');
 const bigPhotoLikes = fullImg.querySelector('.likes-count');
@@ -102,7 +101,7 @@ const showNextComments = () => {
   const commentsHideNodes = bigPhotoComments.querySelectorAll('.hidden');
   const commentsHideCount = commentsHideNodes.length;
 
-  if (commentsHideCount >= VISIBLE_NUMBER_COMMENT) {
+  if (commentsHideCount > VISIBLE_NUMBER_COMMENT) {
     for (let i = 0; i < VISIBLE_NUMBER_COMMENT; i++) {
       commentsHideNodes[i].classList.remove('hidden');
     }

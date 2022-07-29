@@ -1,7 +1,6 @@
 import {isEscape} from './util.js';
 
 const fullImg = document.querySelector('.big-picture');
-/* const imgContainer = document.querySelector('.pictures'); */
 
 const bigPhoto = fullImg.querySelector('.big-picture__img img');
 const bigPhotoLikes = fullImg.querySelector('.likes-count');

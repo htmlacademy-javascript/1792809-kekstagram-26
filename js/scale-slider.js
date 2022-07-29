@@ -1,4 +1,4 @@
-const imgPreview = document.querySelector('.img-upload__preview');
+const imgPreview = document.querySelector('.img-upload__preview img');
 const controlSmaller = document.querySelector('.scale__control--smaller');
 const controlBigger = document.querySelector('.scale__control--bigger');
 const controlValue = document.querySelector('.scale__control--value');
@@ -6,14 +6,14 @@ const controlValue = document.querySelector('.scale__control--value');
 const imgStartSize = 100;
 const STEP = 25;
 
-let currentPhotoSize = imgStartSize;  /*Дать слайдеру начальное значения в 100% без эффектов*/
+let currentPhotoSize = imgStartSize;
 
 const catchStartPhotoSize = () => {
   imgPreview.style.transform = '';
   controlValue.value = `${imgStartSize}%`;
 };
 
-const onSmallerButtonClick = () => {            /*Увеличение изображения*/
+const onSmallerButtonClick = () => {
   if (currentPhotoSize > STEP) {
     currentPhotoSize = currentPhotoSize - STEP;
     controlValue.value = `${currentPhotoSize}%`;
@@ -21,7 +21,7 @@ const onSmallerButtonClick = () => {            /*Увеличение изоб�
   }
 };
 
-const onBiggerButtonClick = () => {                  /*Уменьшение изображения*/
+const onBiggerButtonClick = () => {
   if (currentPhotoSize < 100) {
     currentPhotoSize = currentPhotoSize + STEP;
     controlValue.value = `${currentPhotoSize}%`;
@@ -29,7 +29,8 @@ const onBiggerButtonClick = () => {                  /*Уменьшение из
   }
 };
 
-controlSmaller.addEventListener('click', onSmallerButtonClick);          /*обработчики на увеличение и уменьшение изображения*/
+controlSmaller.addEventListener('click', onSmallerButtonClick);
 controlBigger.addEventListener('click', onBiggerButtonClick);
 
 export {catchStartPhotoSize};
+

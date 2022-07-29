@@ -3,8 +3,8 @@ import {getRandomArrayElement} from './util.js';
 
 let photosData;
 
-const сontainerAllImages = document.querySelector('.pictures');
-const stemplateImage = document.querySelector('#picture').content.querySelector('.picture');
+const allImagesContainer = document.querySelector('.pictures');
+const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const imgFilterForm = document.querySelector('.img-filters__form');
 const filterDefault = imgFilterForm.querySelector('#filter-default');
@@ -61,7 +61,7 @@ const setDiscussedFilter = (cb) => {
 const renderSimilarPhotos = (similarPhotos) => {
   photosData = similarPhotos;
 
-  const allPhotosNodes = сontainerAllImages.querySelectorAll('.picture');
+  const allPhotosNodes = allImagesContainer.querySelectorAll('.picture');
   if (allPhotosNodes.length !== 0) {
     allPhotosNodes.forEach ((photoNode) => {
       photoNode.remove();
@@ -71,16 +71,16 @@ const renderSimilarPhotos = (similarPhotos) => {
   const similarPostsFragment  = document.createDocumentFragment();
 
   similarPhotos.forEach(({url, likes, comments}) => {
-    const otherUserPhoto = stemplateImage.cloneNode(true);
+    const otherUserPhoto = photoTemplate.cloneNode(true);
     otherUserPhoto.querySelector('.picture__img').src = url;
     otherUserPhoto.querySelector('.picture__likes').textContent = likes;
     otherUserPhoto.querySelector('.picture__comments').textContent = comments.length;
     similarPostsFragment.append(otherUserPhoto);
   });
 
-  сontainerAllImages.append(similarPostsFragment);
+  allImagesContainer.append(similarPostsFragment);
 
-  сontainerAllImages.addEventListener('click', onPhotoMiniatureClick);
+  allImagesContainer.addEventListener('click', onPhotoMiniatureClick);
 };
 
 const openFullSize = (photoMiniature) => {

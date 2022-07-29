@@ -1,18 +1,18 @@
 import {getLengthString, isEscape, openErrorLoadMessage, openSuccessLoadMessage} from './util.js';
 import {catchStartPhotoSize} from './scale-slider.js';
-import {resetEffects} from './effects-slider.js';
+import {resetEffects, loadEditPhotoFuncs, unloadEditPhotoFuncs} from './effects-slider.js';
 import {sendData} from './api.js';
 
 const MAX_AMOUNT_HASHTAGS = 5;
 const MAX_AMOUNT_COMMENT = 140;
-const uploadPhotoUploadForm = document.querySelector('.img-upload__form');
-const loadUserPhoto = uploadPhotoUploadForm.querySelector('#upload-file');
-const photoEditor = uploadPhotoUploadForm.querySelector('.img-upload__overlay');
+const uploadPhotoForm = document.querySelector('.img-upload__form');
+const loadUserPhoto = uploadPhotoForm.querySelector('#upload-file');
+const photoEditor = uploadPhotoForm.querySelector('.img-upload__overlay');
 const closePhotoUploadForm = photoEditor.querySelector('#upload-cancel');
-const textHashtags = uploadPhotoUploadForm.querySelector('.text__hashtags');
-const textDescription = uploadPhotoUploadForm.querySelector('.text__description');
+const textHashtags = uploadPhotoForm.querySelector('.text__hashtags');
+const textDescription = uploadPhotoForm.querySelector('.text__description');
 
-const pristine = new Pristine(uploadPhotoUploadForm, {
+const pristine = new Pristine(uploadPhotoForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper_invalid',
   successClass: 'img-upload__field-wrapper_valid',
@@ -37,13 +37,11 @@ const validateContentHashtag = (value) => {
   }
   return true;
 };
-const validateContentHashtagError = 'Хэштег должен начинаться с # и иметь кол-во символов от 1 до 20';
 
 const validateQuantityHashtag = (value) => {
   const hashtags = removeHashtags(value);
   return hashtags.length <= MAX_AMOUNT_HASHTAGS;
 };
-const validateQuantityHashtagError = 'Максимум 5 хэштегов';
 
 const validateRepeatsHashtag = (value) => {
   const hashtags = removeHashtags(value);
@@ -56,25 +54,23 @@ const validateRepeatsHashtag = (value) => {
   }
   return true;
 };
-const validateRepeatsHashtagError = 'Такой хэштег уже существует';
 
 const validateQuantitySymbols  = (description) => {
   const valid = getLengthString(description, MAX_AMOUNT_COMMENT);
   return valid;
 };
-const validateQuantitySymbolsError = 'Длина комментария максимум 140 символов';
 
-pristine.addValidator(textHashtags, validateContentHashtag, validateContentHashtagError);
-pristine.addValidator(textHashtags, validateQuantityHashtag, validateQuantityHashtagError);
-pristine.addValidator(textHashtags, validateRepeatsHashtag, validateRepeatsHashtagError);
-pristine.addValidator(textDescription, validateQuantitySymbols, validateQuantitySymbolsError);
+pristine.addValidator(textHashtags, validateContentHashtag, 'Хэштег должен начинаться с # и иметь кол-во символов от 1 до 20');
+pristine.addValidator(textHashtags, validateQuantityHashtag, `Максимум ${MAX_AMOUNT_HASHTAGS} хэштегов`);
+pristine.addValidator(textHashtags, validateRepeatsHashtag, 'Такой хэштег уже существует');
+pristine.addValidator(textDescription, validateQuantitySymbols, `Длина комментария максимум ${MAX_AMOUNT_COMMENT} символов`);
 
 const onTextInputNodeKeydown = (evt) => {
   evt.stopPropagation();
 };
 
 const resetTextFields = () => {
-  const errorTextNodes = uploadPhotoUploadForm.querySelectorAll('.input__error');
+  const errorTextNodes = uploadPhotoForm.querySelectorAll('.input__error');
   if (errorTextNodes.length > 0) {
     errorTextNodes.forEach((textNode) => {textNode.textContent = '';});
   }
@@ -89,6 +85,7 @@ const closeEditPhotoModal = () => {
 
   resetEffects();
   resetTextFields();
+  unloadEditPhotoFuncs();
 
   textHashtags.removeEventListener('keydown', onTextInputNodeKeydown);
   textDescription.removeEventListener('keydown', onTextInputNodeKeydown);
@@ -107,6 +104,7 @@ const onUploadFileChange = () => {
   photoEditor.classList.remove('hidden');
 
   resetEffects();
+  loadEditPhotoFuncs();
 
   textHashtags.addEventListener('keydown', onTextInputNodeKeydown);
   textDescription.addEventListener('keydown', onTextInputNodeKeydown);
@@ -138,7 +136,7 @@ const onErrorSubmit = () => {
   openErrorLoadMessage();
 };
 
-uploadPhotoUploadForm.addEventListener('submit', (evt) => {
+uploadPhotoForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
